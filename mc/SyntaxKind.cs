@@ -11,6 +11,7 @@ namespace mc
         Start,
         Minus,
         BadToken,
-        EndOfFile
+        EndOfFile,
+        BinaryExpression
     }
 }

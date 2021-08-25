@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace mc
 {
@@ -17,24 +18,38 @@ namespace mc
                     return;
                 }
 
-                var lexer = new Lexer(line);
+                var parser = new Parser(line);
+                var syntaxTree = parser.Parse();
 
-                while (true)
+                PrettyPrint(syntaxTree.Root);
+
+                if (syntaxTree.Diagnostics.Any())
                 {
-                    var token = lexer.GetNextToken();
-
-                    if (token.Kind == SyntaxTokenKind.EndOfFile)
+                    foreach (var diagnostic in syntaxTree.Diagnostics)
                     {
-                        break;
-                    }
-
-                    Console.WriteLine($"{token.Kind}: '{token.Text}'");
-
-                    if (token.Value != null)
-                    {
-                        Console.WriteLine(token.Value);
+                        Console.WriteLine(diagnostic);
                     }
                 }
+            }
+        }
+        static void PrettyPrint(SyntaxNode node, string indent = "")
+        {
+            Console.Write(indent);
+            Console.Write(node.Kind);
+
+            if (node is SyntaxToken token && token.Value != null)
+            {
+                Console.Write(" ");
+                Console.Write(token.Value);
+            }
+
+            Console.WriteLine();
+
+            indent += "    ";
+
+            foreach (var child in node.GetChildren())
+            {
+                PrettyPrint(child, indent);
             }
         }
     }
