@@ -49,7 +49,10 @@ namespace mc
 
                 var tokenLength = position - start;
                 var tokenText = text.Substring(start, tokenLength);
-                int.TryParse(tokenText, out var value);
+                
+                if(!int.TryParse(tokenText, out var value)) {
+                    diagnostics.Add($"Error: the number {text} cannot be represented by int32");
+                }
 
                 return new SyntaxToken(SyntaxTokenKind.Number, start, tokenText, value);
             }
@@ -81,7 +84,7 @@ namespace mc
                     return new SyntaxToken(SyntaxTokenKind.Minus, position, current, null);
                 case ("*"):
                     AdvancePosition();
-                    return new SyntaxToken(SyntaxTokenKind.Start, position, current, null);
+                    return new SyntaxToken(SyntaxTokenKind.Star, position, current, null);
                 case ("/"):
                     AdvancePosition();
                     return new SyntaxToken(SyntaxTokenKind.BackSlash, position, current, null);

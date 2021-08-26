@@ -54,6 +54,32 @@ namespace mc
         }
     }
 
+    sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
+    {
+        public ParenthesizedExpressionSyntax(
+            SyntaxToken openParenthesis,
+            ExpressionSyntax expression,
+            SyntaxToken closeParenthesis)
+        {
+            OpenParenthesis = openParenthesis;
+            Expression = expression;
+            CloseParenthesis = closeParenthesis;
+        }
+
+        public override SyntaxTokenKind Kind => SyntaxTokenKind.ParenthesizedExpression;
+
+        public SyntaxToken OpenParenthesis { get; }
+        public ExpressionSyntax Expression { get; }
+        public SyntaxToken CloseParenthesis { get; }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return OpenParenthesis;
+            yield return Expression;
+            yield return CloseParenthesis;
+        }
+    }
+
     sealed class SyntaxTree
     {
         public SyntaxTree(IEnumerable<string> diagnostics, ExpressionSyntax root, SyntaxToken endOfFilteToken)
@@ -66,5 +92,12 @@ namespace mc
         public IEnumerable<string> Diagnostics { get; }
         public ExpressionSyntax Root { get; }
         public SyntaxToken EndOfFilteToken { get; }
+
+        public static SyntaxTree Parse(string text) 
+        {
+            var parser = new Parser(text);
+            
+            return parser.Parse();
+        }
     }
 }

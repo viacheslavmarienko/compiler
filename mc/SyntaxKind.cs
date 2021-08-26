@@ -8,10 +8,11 @@ namespace mc
         CloseParenthesis,
         OpenParenthesis,
         BackSlash,
-        Start,
+        Star,
         Minus,
         BadToken,
         EndOfFile,
-        BinaryExpression
+        BinaryExpression,
+        ParenthesizedExpression
     }
 }

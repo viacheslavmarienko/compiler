@@ -18,8 +18,7 @@ namespace mc
                     return;
                 }
 
-                var parser = new Parser(line);
-                var syntaxTree = parser.Parse();
+                var syntaxTree = SyntaxTree.Parse(line);
 
                 PrettyPrint(syntaxTree.Root);
 
@@ -29,6 +28,11 @@ namespace mc
                     {
                         Console.WriteLine(diagnostic);
                     }
+                } else {
+                    var e = new Evaluator(syntaxTree.Root);
+                    var result = e.Evaluate();
+
+                    Console.WriteLine(result);
                 }
             }
         }
