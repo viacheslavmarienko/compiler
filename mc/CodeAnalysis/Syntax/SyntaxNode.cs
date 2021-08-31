@@ -14,14 +14,14 @@ namespace mc
 
     }
 
-    public class NumberExpressionSyntax : ExpressionSyntax
+    public class LiteralExpressionSyntax : ExpressionSyntax
     {
-        public NumberExpressionSyntax(SyntaxToken syntaxToken)
+        public LiteralExpressionSyntax(SyntaxToken syntaxToken)
         {
             SyntaxToken = syntaxToken;
         }
 
-        public override SyntaxTokenKind Kind => SyntaxTokenKind.Number;
+        public override SyntaxTokenKind Kind => SyntaxTokenKind.LiteralExpression;
 
         public SyntaxToken SyntaxToken { get; }
 
@@ -51,6 +51,26 @@ namespace mc
             yield return Left;
             yield return OperationToken;
             yield return Right;
+        }
+    }
+
+    sealed class UnaryExpressionSyntax : ExpressionSyntax
+    {
+        public UnaryExpressionSyntax(SyntaxToken operationToken, ExpressionSyntax operand)
+        {
+            OperationToken = operationToken;
+            Operand = operand;
+        }
+
+        public SyntaxToken OperationToken { get; }
+        public ExpressionSyntax Operand { get; }
+
+        public override SyntaxTokenKind Kind => SyntaxTokenKind.UnaryExpression;
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return OperationToken;
+            yield return Operand;
         }
     }
 

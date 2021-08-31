@@ -2,7 +2,6 @@ namespace mc
 {
     public enum SyntaxTokenKind
     {
-        Number,
         Whitespace,
         Plus,
         CloseParenthesis,
@@ -12,7 +11,9 @@ namespace mc
         Minus,
         BadToken,
         EndOfFile,
+        LiteralExpression,
         BinaryExpression,
-        ParenthesizedExpression
+        ParenthesizedExpression,
+        UnaryExpression
     }
 }

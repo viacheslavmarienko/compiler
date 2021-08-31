@@ -31,7 +31,7 @@ namespace mc
             position++;
         }
 
-        public SyntaxToken GetNextToken()
+        public SyntaxToken Lex()
         {
             if (position >= text.Length)
             {
@@ -54,7 +54,7 @@ namespace mc
                     diagnostics.Add($"Error: the number {text} cannot be represented by int32");
                 }
 
-                return new SyntaxToken(SyntaxTokenKind.Number, start, tokenText, value);
+                return new SyntaxToken(SyntaxTokenKind.LiteralExpression, start, tokenText, value);
             }
 
             if (char.IsWhiteSpace(GetCurrentChar()))
